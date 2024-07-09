@@ -11,3 +11,14 @@ def hello_world():
     """
     return "<p>first steps</>"
 
+@app.route("/welcome")
+def welcome_user():
+    """
+    """
+    return {
+        "greeting": "welcome, sailor :)"
+    }
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
