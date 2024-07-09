@@ -27,3 +27,4 @@ class Task(Base):
     user_id = Column(String, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="tasks")
+    time_entries = relationship("TimeEntry", back_populates="task", cascade="all, delete, delete-orphan")
