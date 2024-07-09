@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from base_model import Base
-from sqlalchemy import Column, String, Integer, ForeignKey, JSON
+from sqlalchemy import Column, String, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 import uuid
 import datetime

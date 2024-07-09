@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 from base_model import Base
-from user_model import User
 import datetime
 from sqlalchemy import Column, String, Integer, Text, Boolean, JSON, ForeignKey
 from sqlalchemy.orm import relationship
