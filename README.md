@@ -25,7 +25,12 @@ run the following line to start local server
 ````./api/v1/app.py````
 
 
-## how to set up Aurora on local (fe, be, and db)
+## how to run entire Aurora on local machine
 
-...
+check out how to run the fe, be, and db.
 
+
+run db first, then be, then fe.
+
+
+:)
