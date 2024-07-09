@@ -20,3 +20,4 @@ class User(Base):
     updated_at = Column(String, default=(datetime.datetime.now()).isoformat())
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete, delete-orphan")
+    reports = relationship("Report", back_populates="user", cascade="all, delete, delete-orphan")
