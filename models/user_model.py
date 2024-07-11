@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from base_model import Base
+from .base_model import Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import uuid
@@ -12,12 +12,12 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4())
-    username = Column(String, nullable=False)
-    email = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    created_at = Column(String, default=(datetime.datetime.now()).isoformat())
-    updated_at = Column(String, default=(datetime.datetime.now()).isoformat())
+    id = Column(String(512), primary_key=True, default=uuid.uuid4())
+    username = Column(String(512), nullable=False)
+    email = Column(String(512), nullable=False)
+    password = Column(String(512), nullable=False)
+    created_at = Column(String(512), default=(datetime.datetime.now()).isoformat())
+    updated_at = Column(String(512), default=(datetime.datetime.now()).isoformat())
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete, delete-orphan")
     reports = relationship("Report", back_populates="user", cascade="all, delete, delete-orphan")
