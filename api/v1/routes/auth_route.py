@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 from dependencies.get_db import get_db
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import set_access_cookies, unset_access_cookies
 from models.user_model import User
 
+
 auth = Blueprint("auth", __name__)
+
 
 @auth.route("/sign-in", methods=["POST"])
 def sign_in():
@@ -26,7 +29,9 @@ def sign_in():
         return jsonify({"msg": "incorrect details"}), 401
     
     token = create_access_token(identity=user["id"])
-    return jsonify({"msg": "logged in :)", "token": token}), 200
+    response = jsonify({"msg": "done"})
+    set_access_cookies(response, token)
+    return response
 
 
 @auth.route("/sign-up", methods=["POST"])
@@ -68,3 +73,12 @@ def sign_up():
         "token": access_token
     }), 201
 
+
+@auth.route("/sign-out")
+@jwt_required()
+def sign_out():
+    """
+    """
+    response = jsonify({"msg": "see ya later!"})
+    unset_access_cookies(response=response)
+    return response
