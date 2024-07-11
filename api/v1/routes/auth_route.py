@@ -28,3 +28,43 @@ def sign_in():
     token = create_access_token(identity=user["id"])
     return jsonify({"msg": "logged in :)", "token": token}), 200
 
+
+@auth.route("/sign-up", methods=["POST"])
+def sign_up():
+    """
+    creates a new user
+    returns access token
+    """
+    new_user_email = request.json.get("email")
+    if new_user_email is None\
+        or new_user_email == ""\
+            or "@" not in new_user_email:
+         return jsonify({"msg": "incorrect email"}), 400
+    
+    new_user_password = request.json.get("password")
+    if new_user_password is None or new_user_password == "":
+        return jsonify({"msg": "invalid password"}), 400
+    
+    new_user_username = request.json.get("username")
+    if new_user_username is None or new_user_username == "":
+        return jsonify({"msg": "invalid username"})
+    
+    new_user = User(
+        email=new_user_email,
+        password=new_user_password,
+        username=new_user_username
+    )
+
+    db = next(get_db())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    access_token = create_access_token(identity=new_user.id)
+    
+    return jsonify({
+        "new_user_id": new_user.id,
+        "new_user_username": new_user.username,
+        "token": access_token
+    }), 201
+
