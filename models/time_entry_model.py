@@ -18,3 +18,13 @@ class TimeEntry(Base):
     tracked_time = Column(JSON, nullable=False)
 
     task = relationship("Task", back_populates="time_entries")
+
+    def to_dict(self):
+        """
+        """
+        return {
+            "id": self.id,
+            "task_id": self.task_id,
+            "created_at": self.created_at,
+            "tracked_time": self.tracked_time
+        }

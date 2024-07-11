@@ -24,14 +24,19 @@ jwt = JWTManager(app)
 def hello_world():
     """
     """
-    return "<p>first steps</>"
+    db = next(get_db())
+    test_user = User(
+        username="ella",
+        email="ella@gmail.com",
+        password="ellatests"
+    )
+    db.add(test_user)
+    db.commit()
+    db.refresh(test_user)
 
-@app.route("/welcome")
-def welcome_user():
-    """
-    """
     return {
-        "greeting": "welcome, sailor :)"
+        "greeting": "welcome, sailor :)",
+        "id": test_user.id
     }
 
 @app.route("/testdb")
@@ -41,7 +46,8 @@ def test_db():
     """
     db = next(get_db())
     all_users = db.query(User).all()
-    return jsonify(all_users), 200
+    all_users_list = [user for user in all_users]
+    return all_users
 
 @app.route("/get-token", methods=["POST"])
 def get_token():
@@ -53,6 +59,9 @@ def get_token():
     
     token = create_access_token(identity=username)
     return jsonify(token=token), 201
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
