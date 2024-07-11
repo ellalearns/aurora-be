@@ -1,1 +1,7 @@
 /aurora
+/__pycache__
+/api/__pycache__
+/api/v1/__pycache__
+/api/v1/routes/__pycache__
+/aurora_be.egg-info
+/models/__pycache__
