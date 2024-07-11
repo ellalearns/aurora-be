@@ -21,3 +21,18 @@ class User(Base):
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete, delete-orphan")
     reports = relationship("Report", back_populates="user", cascade="all, delete, delete-orphan")
+
+    def to_dict(self):
+        """
+        returns dictionary instance of user
+        """
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "password": self.password,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "tasks": [task.to_dict() for task in self.tasks],
+            "reports": [report.to_dict() for report in self.reports]
+        }

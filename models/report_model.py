@@ -16,3 +16,12 @@ class Report(Base):
     daily_time = Column(JSON, nullable=True)
 
     user = relationship("User", back_populates="reports")
+
+    def to_dict(self):
+        """
+        """
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "daily_time": self.daily_time
+        }
