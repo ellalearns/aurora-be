@@ -66,12 +66,15 @@ def sign_up():
     db.refresh(new_user)
 
     access_token = create_access_token(identity=new_user.id)
-    
-    return jsonify({
+
+    response = jsonify({
         "new_user_id": new_user.id,
         "new_user_username": new_user.username,
-        "token": access_token
-    }), 201
+    })
+    
+    set_access_cookies(response, access_token)
+
+    return response
 
 
 @auth.route("/sign-out")
