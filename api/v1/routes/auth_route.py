@@ -21,9 +21,9 @@ def sign_in():
     db = next(get_db())
 
     try:
-        user = db.query(User).filter(User.email==email).one().to_dict()
+        user = db.query(User).filter(User.email==email).one().check()
     except:
-        return jsonify({"msg": "improper request"}), 400
+        return jsonify({"msg": "incorrect details"}), 400
     
     if user is None or user["password"] != password:
         return jsonify({"msg": "incorrect details"}), 401
@@ -66,12 +66,15 @@ def sign_up():
     db.refresh(new_user)
 
     access_token = create_access_token(identity=new_user.id)
-    
-    return jsonify({
+
+    response = jsonify({
         "new_user_id": new_user.id,
         "new_user_username": new_user.username,
-        "token": access_token
-    }), 201
+    })
+    
+    set_access_cookies(response, access_token)
+
+    return response
 
 
 @auth.route("/sign-out")
