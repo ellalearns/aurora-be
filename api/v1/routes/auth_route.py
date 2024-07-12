@@ -21,7 +21,7 @@ def sign_in():
     db = next(get_db())
 
     try:
-        user = db.query(User).filter(User.email==email).one().to_dict()
+        user = db.query(User).filter(User.email==email).one().check()
     except:
         return jsonify({"msg": "improper request"}), 400
     

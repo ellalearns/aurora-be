@@ -9,12 +9,14 @@ from flask_jwt_extended import jwt_required, JWTManager, set_access_cookies
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity
 from models.user_model import User
 from routes.auth_route import auth
+from routes.user_route import user
 
 
 
 
 app = Flask(__name__)
 app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(user, url_prefix="/user")
 
 
 CORS(app, resources={
