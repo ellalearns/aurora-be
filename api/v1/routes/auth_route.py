@@ -23,7 +23,7 @@ def sign_in():
     try:
         user = db.query(User).filter(User.email==email).one().check()
     except:
-        return jsonify({"msg": "improper request"}), 400
+        return jsonify({"msg": "incorrect details"}), 400
     
     if user is None or user["password"] != password:
         return jsonify({"msg": "incorrect details"}), 401

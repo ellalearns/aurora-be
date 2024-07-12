@@ -2,7 +2,7 @@
 from dependencies.get_db import get_db
 from models.user_model import User
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, unset_access_cookies
 
 
 user = Blueprint("user", __name__)
@@ -54,3 +54,30 @@ def edit_username():
     return jsonify({
         "new_username": user.to_dict()["username"]
     }), 201
+
+
+@user.route("/delete-user", methods=["DELETE"])
+@jwt_required()
+def delete_user():
+    """
+    soft deletes a user
+    """
+    user_id = ""
+    try:
+        user_id = get_jwt_identity()
+    except:
+        return 401
+    
+    user = db.query(User).filter(User.id==user_id).one()
+    user.email = "del_" + user.email
+    user.is_deleted = True
+    db.commit()
+    db.refresh(user)
+
+    response = jsonify({
+        "msg": "sad to see you go"
+    })
+
+    unset_access_cookies(response=response)
+
+    return response

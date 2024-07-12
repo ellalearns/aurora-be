@@ -64,7 +64,7 @@ def test_db():
     """
     """
     db = next(get_db())
-    all_users = db.query(User).all()
+    all_users = db.query(User).filter(User.is_deleted==False).all()
     all_users_list = [user.to_dict() for user in all_users]
     return all_users_list
 
