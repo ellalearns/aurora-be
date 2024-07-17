@@ -26,7 +26,7 @@ def sign_in():
         return jsonify({"msg": "incorrect details"}), 400
     
     if user is None or user["password"] != password:
-        return jsonify({"msg": "incorrect details"}), 401
+        return jsonify({"msg": "incorrect details"}), 400
     
     token = create_access_token(identity=user["id"])
     response = jsonify({"msg": "done"})
