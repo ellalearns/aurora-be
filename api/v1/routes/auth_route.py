@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, jwt_required
 from flask_jwt_extended import set_access_cookies, unset_access_cookies
 from models.user_model import User
+from sqlalchemy.exc import IntegrityError
 
 
 auth = Blueprint("auth", __name__)
@@ -62,7 +63,17 @@ def sign_up():
 
     db = next(get_db())
     db.add(new_user)
-    db.commit()
+
+    try:
+        db.commit()
+    except IntegrityError as e:
+        if "Duplicate entry" in str(e):
+            return jsonify({
+                "msg": "email already exists"
+            }), 400
+        else:
+            pass
+
     db.refresh(new_user)
 
     access_token = create_access_token(identity=new_user.id)
