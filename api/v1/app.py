@@ -21,9 +21,12 @@ app.register_blueprint(user, url_prefix="/user")
 
 CORS(app, resources={
     r"/*": {
-        "origins": "http://localhost:3000"
+        "origins": "*"
     }
-})
+}, preflightContinue=True)
+
+app.config["CORS_METHODS"] = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+app.config["CORS_HEADERS"] = ["Content-Type", "Authorization", "x-requested-with"]
 
 
 load_dotenv()
