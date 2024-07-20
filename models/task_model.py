@@ -41,12 +41,13 @@ class Task(Base):
             "description": self.description,
             "started_at": self.started_at,
             "stopped_at": self.stopped_at,
-            "completed": self.completed,
+            "is_stopped": self.is_stopped,
+            "is_done": self.is_done,
             "tags": self.tags,
             "major": self.major,
             "recurring": self.recurring,
             "recurring_timeblock": self.recurring_timeblock,
-            "deleted": self.deleted,
+            "is_deleted": self.is_deleted,
             "user_id": self.user_id,
             "time_entries": [time_entry.to_dict() for time_entry in self.time_entries]
         }

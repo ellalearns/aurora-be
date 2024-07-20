@@ -35,6 +35,7 @@ class User(Base):
             "email": self.email,
             "password": self.password,
             "is_deleted": self.is_deleted,
+            "daily_target": self.daily_target,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
@@ -47,6 +48,7 @@ class User(Base):
             "id": self.id,
             "username": self.username,
             "email": self.email,
+            "daily_target": self.daily_target,
             "tasks": [task.to_dict() for task in self.tasks],
             "reports": [report.to_dict() for report in self.reports]
         }
