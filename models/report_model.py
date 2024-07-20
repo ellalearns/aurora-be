@@ -3,6 +3,7 @@ from .base_model import Base
 from sqlalchemy import Column, String, JSON, ForeignKey
 from sqlalchemy.orm import relationship
 import uuid
+import datetime
 
 
 class Report(Base):
@@ -11,9 +12,12 @@ class Report(Base):
     """
     __tablename__ = "reports"
 
-    id = Column(String(512), primary_key=True, default=uuid.uuid4())
+    id = Column(String(512), primary_key=True, default=lambda: uuid.uuid4())
     user_id = Column(String(512), ForeignKey("users.id"))
     daily_time = Column(JSON, nullable=True)
+
+    created_at = Column(String(512), default=lambda: (datetime.datetime.now().isoformat()))
+    updated_at = Column(String(512), default=lambda: (datetime.datetime.now().isoformat()))
 
     user = relationship("User", back_populates="reports")
 
