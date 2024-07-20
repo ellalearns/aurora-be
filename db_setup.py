@@ -8,6 +8,7 @@ from models.user_model import User
 from models.task_model import Task
 from models.time_entry_model import TimeEntry
 from models.report_model import Report
+from models.target_model import Target
 
 
 #get values from env files
