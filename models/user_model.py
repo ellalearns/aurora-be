@@ -12,7 +12,7 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id = Column(String(512), primary_key=True, default=uuid.uuid4())
+    id = Column(String(512), primary_key=True, default=lambda: uuid.uuid4())
     username = Column(String(512), nullable=False)
     email = Column(String(512), nullable=False, unique=True)
     password = Column(String(512), nullable=False)
