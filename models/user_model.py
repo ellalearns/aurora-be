@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from .base_model import Base
-from sqlalchemy import Column, String, Boolean
+from sqlalchemy import Column, String, Boolean, Integer
 from sqlalchemy.orm import relationship
 import uuid
 import datetime
@@ -17,8 +17,10 @@ class User(Base):
     email = Column(String(512), nullable=False, unique=True)
     password = Column(String(512), nullable=False)
     is_deleted = Column(Boolean, default=False)
-    created_at = Column(String(512), default=(datetime.datetime.now()).isoformat())
-    updated_at = Column(String(512), default=(datetime.datetime.now()).isoformat())
+    daily_target = Column(Integer, default=70)
+    
+    created_at = Column(String(512), default=lambda: (datetime.datetime.now()).isoformat())
+    updated_at = Column(String(512), default=lambda: (datetime.datetime.now()).isoformat())
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete, delete-orphan")
     reports = relationship("Report", back_populates="user", cascade="all, delete, delete-orphan")
