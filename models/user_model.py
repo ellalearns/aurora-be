@@ -51,5 +51,6 @@ class User(Base):
             "email": self.email,
             "daily_target": self.daily_target,
             "tasks": [task.to_dict() for task in self.tasks],
-            "reports": [report.to_dict() for report in self.reports]
+            "reports": [report.to_dict() for report in self.reports],
+            "targets": [target.to_dict() for target in self.targets]
         }

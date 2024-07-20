@@ -12,10 +12,12 @@ class TimeEntry(Base):
     """
     __tablename__ = "time_entries"
 
-    id = Column(String(512), primary_key=True, default=uuid.uuid4())
+    id = Column(String(512), primary_key=True, default=lambda: uuid.uuid4())
     task_id = Column(String(512), ForeignKey("tasks.id"))
-    created_at = Column(String(512), nullable=False, default=(datetime.datetime.now()).isoformat())
     tracked_time = Column(JSON, nullable=False)
+
+    created_at = Column(String(512),default=lambda: (datetime.datetime.now()).isoformat())
+    updated_at = Column(String(512), default=lambda: datetime.datetime.now().isoformat())
 
     task = relationship("Task", back_populates="time_entries")
 
