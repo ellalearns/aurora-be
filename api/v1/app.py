@@ -23,7 +23,7 @@ CORS(app, resources={
     r"/*": {
         "origins": "*"
     }
-}, preflightContinue=True)
+}, preflightContinue=True, supports_credentials=True)
 
 app.config["CORS_METHODS"] = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 app.config["CORS_HEADERS"] = ["Content-Type", "Authorization", "x-requested-with"]
@@ -34,6 +34,9 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=3)
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config["JWT_CSRF_METHODS"] = []
+app.config["JWT_COOKIE_CSRF_PROTECT"] = True
+app.config["JWT_COOKIE_SAMESITE"] = "None"
+app.config["JWT_COOKIE_SECURE"] = False
 jwt = JWTManager(app)
 
 
