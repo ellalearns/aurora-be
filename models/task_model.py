@@ -19,7 +19,7 @@ class Task(Base):
     stopped_at = Column(String(512), nullable=True)
     is_stopped = Column(Boolean, nullable=False, default=False)
     is_done = Column(Boolean, default=False)
-    tags = Column(JSON, nullable=True)
+    tags = Column(JSON, default=[])
     major = Column(Integer, nullable=False, default=0)
     recurring = Column(Boolean, default=False)
     recurring_timeblock = Column(String(512), nullable=True)
