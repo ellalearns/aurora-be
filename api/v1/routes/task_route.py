@@ -9,11 +9,7 @@ from sqlalchemy import and_
 
 
 task = Blueprint("task", __name__)
-db = next(get_db())
 
-
-task = Blueprint("task", __name__)
-db = next(get_db())
 
 @task.route("/", methods=["POST"])
 @jwt_required()
@@ -34,6 +30,8 @@ def create_task():
     new_task = Task()
     for key, value in request_dict.items():
         setattr(new_task, key, value)
+    
+    db = next(get_db())
     
     db.add(new_task)
     db.commit()

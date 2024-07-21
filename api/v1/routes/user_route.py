@@ -6,7 +6,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, unset_access_cook
 
 
 user = Blueprint("user", __name__)
-db = next(get_db())
 
 
 @user.route("/")
@@ -47,6 +46,8 @@ def edit_username():
     except:
         return 401
     
+    db = next(get_db())
+
     user = db.query(User).filter(User.id==user_id).one()
     user.username = new_username
     db.commit()
@@ -68,6 +69,8 @@ def delete_user():
         user_id = get_jwt_identity()
     except:
         return 401
+    
+    db = next(get_db())
     
     user = db.query(User).filter(User.id==user_id).one()
     user.email = "del_" + user.email
