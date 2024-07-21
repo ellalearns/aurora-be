@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from dependencies.get_db import get_db
+from dependencies.update_target import update_target
 from models.task_model import Task
 from models.target_model import Target
 from models.user_model import User
@@ -40,20 +41,8 @@ def create_task():
     db.refresh(new_task)
 
     started_at = new_task.to_dict()["started_at"][0:10]
-    target = db.query(Target).filter(and_(Target.user_id==user, Target.date.contains(started_at))).one_or_none()
-    if target is None:
-        target = Target(
-            user_id=user,
-            daily_target=db.query(User).filter(User.id==user).one().daily_target,
-            tasks_total=1
-        )
-    else:
-        target.tasks_total = target.tasks_total + 1
 
-    
-    db.add(target)
-    db.commit()
-    db.refresh(target)
+    update_target(started_at, user)
 
     response = {
         "task": new_task.to_dict()
@@ -108,20 +97,10 @@ def start_task():
         return_task_id = new_task_id
 
         started_at = task.to_dict()["started_at"][0:10]
-        target = db.query(Target).filter(and_(Target.user_id==user, Target.date.contains(started_at))).one_or_none()
-        if target is None:
-            target = Target(
-            user_id=user,
-            daily_target=db.query(User).filter(User.id==user).one().daily_target,
-            tasks_total=1
-        )
-        else:
-            target.tasks_total = target.tasks_total + 1
-            
-            db.add(target)
-            db.commit()
-            db.refresh(target)
-    
+
+        update_target(started_at, user)
+
+
     response = {
         "id": return_task_id,
         "started_at": task.started_at
