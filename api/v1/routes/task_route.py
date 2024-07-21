@@ -6,6 +6,8 @@ from models.user_model import User
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import and_
+import uuid
+import datetime
 
 
 task = Blueprint("task", __name__)
@@ -54,12 +56,77 @@ def create_task():
     db.refresh(target)
 
     response = {
-        "id": new_task.id,
+        "task": new_task.to_dict()
     }
 
     return jsonify(response), 201
 
     
+@task.route("/track", methods=["PATCH"])
+@jwt_required()
+def start_task():
+    """
+    start tracking a task
+    """
+    db = next(get_db())
+    user = get_jwt_identity()
 
+    task_id = request.json.get("id", None)
+    task_started_at = request.json.get("started_at", datetime.datetime.now().isoformat())
+
+    return_task_id = ""
+
+    if task_id is not None:
+        task = db.query(Task).get(id==task_id)
+        task.started_at = task_started_at
+        task.is_stopped = False
+        task.user_id = user
+
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+
+        return_task_id = task_id
+    
+    if task_id is None:
+        new_task_id = uuid.uuid4()
+        task_title = request.json.get("title", "")
+        task_description = request.json.get("description", "")
+
+        task = Task()
+        task.id = new_task_id
+        task.title = task_title
+        task.description = task_description
+        task.started_at = task_started_at
+        task.is_stopped = False
+        task.user_id = user
+
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+
+        return_task_id = new_task_id
+
+        started_at = task.to_dict()["started_at"][0:10]
+        target = db.query(Target).filter(and_(Target.user_id==user, Target.date.contains(started_at))).one_or_none()
+        if target is None:
+            target = Target(
+            user_id=user,
+            daily_target=db.query(User).filter(User.id==user).one().daily_target,
+            tasks_total=1
+        )
+        else:
+            target.tasks_total = target.tasks_total + 1
+            
+            db.add(target)
+            db.commit()
+            db.refresh(target)
+    
+    response = {
+        "id": return_task_id,
+        "started_at": task.started_at
+    }
+
+    return jsonify(response), 201
 
 
