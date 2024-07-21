@@ -51,7 +51,7 @@ def create_task():
     return jsonify(response), 201
 
     
-@task.route("/track", methods=["PATCH"])
+@task.route("/start", methods=["PATCH"])
 @jwt_required()
 def start_task():
     """
