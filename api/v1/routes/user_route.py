@@ -21,6 +21,7 @@ def get_user():
     except:
         return jsonify({"msg": "incorrect tokens"}), 401
     
+    db = next(get_db())
     user = db.query(User).filter(User.id==user_id).one()
 
     return jsonify({
