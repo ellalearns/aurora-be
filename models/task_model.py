@@ -20,7 +20,7 @@ class Task(Base):
     is_stopped = Column(Boolean, nullable=False, default=False)
     is_done = Column(Boolean, default=False)
     tags = Column(JSON, default=[])
-    major = Column(Integer, nullable=False, default=0)
+    is_major = Column(Boolean, default=False)
     recurring = Column(Boolean, default=False)
     recurring_timeblock = Column(String(512), nullable=True)
     is_deleted = Column(Boolean, default=False)
@@ -44,7 +44,7 @@ class Task(Base):
             "is_stopped": self.is_stopped,
             "is_done": self.is_done,
             "tags": self.tags,
-            "major": self.major,
+            "is_major": self.is_major,
             "recurring": self.recurring,
             "recurring_timeblock": self.recurring_timeblock,
             "is_deleted": self.is_deleted,

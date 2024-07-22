@@ -142,3 +142,13 @@ def stop_task():
 
     return jsonify(response), 201
 
+
+@task.route("/", methods=["PATCH"])
+@jwt_required()
+def edit_task():
+    """
+    edit task details:
+    title
+    description
+    is_major
+    """
