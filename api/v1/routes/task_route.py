@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from dependencies.get_db import get_db
 from dependencies.update_target import update_target
+from dependencies.time_entry_deps import add_time_entry
 from models.task_model import Task
 from models.target_model import Target
 from models.user_model import User
@@ -66,12 +67,11 @@ def start_task():
     return_task_id = ""
 
     if task_id is not None:
-        task = db.query(Task).get(id==task_id)
+        task = db.query(Task).get(task_id)
         task.started_at = task_started_at
         task.is_stopped = False
         task.user_id = user
 
-        db.add(task)
         db.commit()
         db.refresh(task)
 
@@ -108,4 +108,37 @@ def start_task():
 
     return jsonify(response), 201
 
+
+@task.route("/stop", methods=["PATCH"])
+@jwt_required()
+def stop_task():
+    """
+    stop tracking a task
+    """
+    task_id = request.json.get("id")
+    stopped_at = request.json.get("stopped_at")
+
+    db = next(get_db())
+
+    task = db.query(Task).filter(Task.id==task_id).one_or_none()
+    if task is None:
+        return jsonify({
+            "msg": "task id doesn't exist"
+        }), 400
+    
+    if task.is_stopped == False:
+        task.stopped_at = stopped_at
+        task.is_stopped = True
+        
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+
+        add_time_entry(task.started_at, stopped_at, task_id)
+    
+    response = {
+        "stopped_at": task.stopped_at
+    }
+
+    return jsonify(response), 201
 
