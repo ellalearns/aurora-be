@@ -152,3 +152,27 @@ def edit_task():
     description
     is_major
     """
+    db = next(get_db())
+
+    task_id = request.json.get("id")
+    task_edit_cols = request.json.get("task_edit")
+
+    task = db.query(Task).get(task_id)
+    if task is None:
+        return jsonify({
+            "msg": "task doesn't exist"
+        })
+    
+    for key, value in task_edit_cols.items():
+        if key == "id" or key == "user_id":
+            pass
+        else:
+            setattr(task, key, value)
+    
+    db.commit()
+    db.refresh(task)
+
+    response = task.to_dict()
+
+    return jsonify(response), 200
+
