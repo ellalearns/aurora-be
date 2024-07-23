@@ -3,8 +3,6 @@ from dependencies.get_db import get_db
 from dependencies.update_target import update_target
 from dependencies.time_entry_deps import add_time_entry
 from models.task_model import Task
-from models.target_model import Target
-from models.user_model import User
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import and_
