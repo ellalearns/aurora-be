@@ -176,3 +176,21 @@ def edit_task():
 
     return jsonify(response), 200
 
+
+@task.route("/", methods=["GET"])
+@jwt_required()
+def get_tasks():
+    """
+    get a user's daily tasks
+    """
+    db = next(get_db())
+    user = get_jwt_identity()
+    date = datetime.datetime.now().isoformat()[0:10]
+
+    tasks = [
+        task.to_dict() 
+        for task 
+        in db.query(Task).filter(and_(Task.user_id==user, Task.started_at.contains(date)), Task.is_deleted==False).all()
+    ]
+
+    return jsonify(tasks), 200
