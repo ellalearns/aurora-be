@@ -194,3 +194,23 @@ def get_tasks():
     ]
 
     return jsonify(tasks), 200
+
+
+@task.route("/", methods=["DELETE"])
+@jwt_required()
+def delete_task():
+    """
+    soft delete a task
+    """
+    db = next(get_db())
+    task_id = request.json.get("id")
+    
+    task = db.query(Task).get(task_id)
+    task.is_deleted = True
+
+    db.commit()
+    db.refresh(task)
+
+    return jsonify({
+        "msg": "task soft deleted"
+    }), 200
