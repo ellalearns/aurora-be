@@ -14,7 +14,7 @@ class TimeEntry(Base):
 
     id = Column(String(512), primary_key=True, default=lambda: uuid.uuid4())
     task_id = Column(String(512), ForeignKey("tasks.id"))
-    tracked_time = Column(JSON, nullable=False)
+    tracked_time = Column(JSON, default=[])
 
     created_at = Column(String(512),default=lambda: (datetime.datetime.now()).isoformat())
     updated_at = Column(String(512), default=lambda: datetime.datetime.now().isoformat())

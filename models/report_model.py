@@ -14,7 +14,7 @@ class Report(Base):
 
     id = Column(String(512), primary_key=True, default=lambda: uuid.uuid4())
     user_id = Column(String(512), ForeignKey("users.id"))
-    daily_time = Column(JSON, nullable=True)
+    daily_time = Column(JSON, default={})
 
     created_at = Column(String(512), default=lambda: (datetime.datetime.now().isoformat()))
     updated_at = Column(String(512), default=lambda: (datetime.datetime.now().isoformat()))
