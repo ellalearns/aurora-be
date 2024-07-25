@@ -24,7 +24,9 @@ DB_NAME = os.getenv("DB_NAME")
 engine = create_engine(
     f"{DB}+{DIALECT}://{USER}:{PASSWORD}@{HOST}/{DB_NAME}",
     echo=True,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    pool_size=30,
+    max_overflow=10
     )
 
 #create connection session
