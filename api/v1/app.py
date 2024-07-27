@@ -11,6 +11,7 @@ from models.user_model import User
 from routes.auth_route import auth
 from routes.user_route import user
 from routes.task_route import task
+from routes.target_route import target
 
 
 
@@ -18,6 +19,8 @@ app = Flask(__name__)
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(user, url_prefix="/user")
 app.register_blueprint(task, url_prefix="/task")
+app.register_blueprint(target, url_prefix="/target")
+
 
 
 CORS(app, resources={
