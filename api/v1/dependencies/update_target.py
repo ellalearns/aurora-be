@@ -27,3 +27,18 @@ def update_target(date, user_id):
     db.add(target)
     db.commit()
     db.refresh(target)
+
+
+def done_target(date, user_id):
+    """
+    increase number of done tasks
+    """
+    db = next(get_db())
+
+    target = db.query(Target).filter(and_(Target.user_id==user_id, Target.date.contains(date))).one()
+    
+    target.tasks_done += 1
+    
+    db.add(target)
+    db.commit()
+    db.refresh(target)

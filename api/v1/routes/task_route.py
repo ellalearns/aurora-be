@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from dependencies.get_db import get_db
-from dependencies.update_target import update_target
+from dependencies.update_target import update_target, done_target
 from dependencies.time_entry_deps import add_time_entry
 from models.task_model import Task
 from flask import Blueprint, jsonify, request
@@ -188,7 +188,7 @@ def get_tasks():
     tasks = [
         task.to_dict() 
         for task 
-        in db.query(Task).filter(and_(Task.user_id==user, Task.started_at.contains(date)), Task.is_deleted==False).all()
+        in db.query(Task).filter(and_(Task.user_id==user, Task.started_at.contains(date)), Task.is_deleted==False, Task.is_done==False).all()
     ]
 
     return jsonify(tasks), 200
@@ -211,4 +211,26 @@ def delete_task():
 
     return jsonify({
         "msg": "task soft deleted"
+    }), 200
+
+
+@task.route("/isdone", methods=["PATCH"])
+@jwt_required()
+def mark_task_done():
+    """
+    mark a task as done
+    """
+    db = next(get_db())
+    task_id = request.json.get("id")
+
+    task = db.query(Task).get(task_id)
+    task.is_done = True
+    
+    db.commit()
+    db.refresh(task)
+
+    done_target((datetime.datetime.now().isoformat())[0:10], get_jwt_identity())
+
+    return jsonify({
+        "msg": "marked done"
     }), 200
