@@ -61,6 +61,17 @@ remove the build folder just created
 ````rm -rf build````
 
 
+set up mkcert for local https
+
+
+```bash
+sudo apt install libnss3-tools
+sudo apt install mkcert
+mkcert -install
+mkcert localhost
+```
+
+
 run the API 😊
 
 

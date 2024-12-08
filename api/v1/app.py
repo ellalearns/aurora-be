@@ -40,7 +40,7 @@ app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config["JWT_CSRF_METHODS"] = []
 app.config["JWT_COOKIE_CSRF_PROTECT"] = True
 app.config["JWT_COOKIE_SAMESITE"] = "None"
-app.config["JWT_COOKIE_SECURE"] = False
+app.config["JWT_COOKIE_SECURE"] = True
 jwt = JWTManager(app)
 
 
@@ -82,4 +82,7 @@ def test_db():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        ssl_context=("localhost.pem", "localhost-key.pem"),
+        debug=True
+        )
