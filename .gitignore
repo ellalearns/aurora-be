@@ -5,3 +5,5 @@
 /api/v1/routes/__pycache__
 /aurora_be.egg-info
 /models/__pycache__
+/build
+.env

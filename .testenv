@@ -1,0 +1,7 @@
+DB_NAME="aurora_test_db"
+USER="test"
+PWD="test"
+HOST="localhost"
+DB="mysql"
+DIALECT="pymysql"
+JWT_SECRET_KEY="test"
