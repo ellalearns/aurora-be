@@ -65,6 +65,15 @@ mkcert localhost
 python3 ./api/v1/app.py
 ```
 
+If everything went according to plan, you should the following JSON response at the root route:
+
+**Response**
+```bash
+{
+  "greeting": "welcome, sailor :)"
+}
+```
+
 ## How to run Aurora as a whole on local machine
 
 Visit other repos to learn how to un the fe, be, and db.
@@ -74,6 +83,12 @@ Run db first, then be, then fe.
 Enjoy.
 
 ## API Endpoints
+
+Aurora's public API allows users to authenticate their sessions, create and edit tasks, modify user details, and modify the daily target. 
+
+### User Authentication
+
+#### Sign-In
 
 
 
