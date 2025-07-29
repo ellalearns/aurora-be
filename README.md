@@ -86,10 +86,83 @@ Enjoy.
 
 Aurora's public API allows users to authenticate their sessions, create and edit tasks, modify user details, and modify the daily target. 
 
-### User Authentication
+Before you begin, here is the main URL for a local host:
+```bash
+https://``127.0.0.1:5000
+```
 
-#### Sign-In
+### User Details
 
+You can request a user's details as long as you send a valid token as a session cookie.
 
+**Request**
+```bash
+GET /user/
+```
+**Valid Response**
+```bash
+{ "user": {
+        "id": xxx
+        "username": xxx,
+        "email": "email@sample.com",
+        "daily_target": 3,
+        "max_major": 2,
+        "current_major": 0,
+        "tasks": [],
+        "reports": [],
+        "targets": []
+      }
+  }
+```
+**Possible Errors**
+```bash
+{ "msg": "incorrect token" }
+```
+
+### Authentication
+
+You can create a new user, sign in, and sign out via the pulic API.
+
+#### Sign Up
+
+Send a POST request containing a JSON body detailing the new user's email, new password, and new username. 
+
+**Request**
+
+```bash
+curl https://127.0.0.1:5000/auth/sign-up/
+-H "Content-Type: application/json"
+-X POST
+```
+
+**Request body**
+```bash
+{
+  "email": "email@sample.com",
+  "password": "newpassword",
+  "username": "myUsername"
+}
+```
+
+**Valid Response**
+```bash
+{
+  "new_user_id": "newid",
+  "new_user_username": "newusername"
+}
+```
+
+**Possible Errors**
+```bash
+{ "msg": "email not valid" }
+```
+```bash
+{ "msg": "invalid password" }
+```
+```bash
+{ "msg": "username not present" }
+```
+
+## To be continued...
 
 😙 😙 😙
